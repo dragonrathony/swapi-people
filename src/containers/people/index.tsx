@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import Button from "../../components/button";
 import { PageHeading } from "../../components/page-heading";
 import Table from "../../components/table";
+import TableFooter from "../../components/table-footer";
 import TableHeading from "../../components/table-headings";
 import TableRow from "../../components/table-rows";
 import { Wrapper } from "../../components/wrapper";
@@ -11,6 +13,7 @@ type Peoples = {
   next: string;
   results: {}[];
 };
+
 const People = () => {
   const { data, loading, error } = useFetchPeople();
   const [peoples, setPeoples] = useState<Peoples | any>();
@@ -27,10 +30,12 @@ const People = () => {
   return (
     <Wrapper>
       <PageHeading>People list</PageHeading>
-      <Table>
-        <TableHeading tHeadings={tableHeadings} />
+      {peoples?.results && (
+        <>
+          <Table>
+            <TableHeading tHeadings={tableHeadings} />
 
-        {/* {peoples?.results?.map((people: any, i: number): any => (
+            {/* {peoples?.results?.map((people: any, i: number): any => (
           <TableRow
             tRowsData={{
               name: people.name,
@@ -43,20 +48,26 @@ const People = () => {
             }}
           />
         ))} */}
-        <tbody>
-          {peoples?.results?.map((people: any, i: number): any => (
-            <tr key={i}>
-              <td>{people.name}</td>
-              <td>{people.height}</td>
-              <td>{people.mass}</td>
-              <td>{people.hair_color}</td>
-              <td>
-                <button>View</button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+            <tbody>
+              {peoples?.results?.map((people: any, i: number): any => (
+                <tr key={i}>
+                  <td>{people.name}</td>
+                  <td>{people.height}</td>
+                  <td>{people.mass}</td>
+                  <td>{people.hair_color}</td>
+                  <td>
+                    <Button>View</Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+          <TableFooter>
+            <Button>Previous</Button>
+            <Button>Next</Button>
+          </TableFooter>
+        </>
+      )}
     </Wrapper>
   );
 };
