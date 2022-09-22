@@ -1,13 +1,12 @@
 import { useEffect, useState } from "react";
-import { BASE_URL } from "../utils/constants";
 
-const useFetchPeople = () => {
+const useFetchPeople = (URL: any) => {
   const [data, setdata] = useState(null);
   const [loading, setloading] = useState(true);
   const [error, seterror] = useState("");
 
   useEffect(() => {
-    fetch(BASE_URL + "/people")
+    fetch(URL)
       .then((res) => res.json())
       .then((data) => {
         seterror(data.error);

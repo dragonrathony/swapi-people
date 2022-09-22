@@ -7,9 +7,14 @@ const Button = styled.button`
   border: none;
   outline: none;
   border-radius: 5px;
-  cursor: pointer;
   :hover {
     opacity: 0.9;
+  }
+
+  ${props => props.disabled ? `
+   cursor: not-allowed;
+    `: `
+    cursor: pointer;`
   }
 `;
 

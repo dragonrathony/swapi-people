@@ -4,9 +4,9 @@ import { PageHeading } from "../../components/page-heading";
 import Table from "../../components/table";
 import TableFooter from "../../components/table-footer";
 import TableHeading from "../../components/table-headings";
-import TableRow from "../../components/table-rows";
 import { Wrapper } from "../../components/wrapper";
 import useFetchPeople from "../../hooks/useFetchPeople";
+import { BASE_URL } from "../../utils/constants";
 
 type Peoples = {
   count: number;
@@ -15,61 +15,60 @@ type Peoples = {
 };
 
 const People = () => {
-  const { data, loading, error } = useFetchPeople();
+  const { data, loading, error } = useFetchPeople(BASE_URL);
   const [peoples, setPeoples] = useState<Peoples | any>();
+  const [errorMsg, setErrorMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
   const tableHeadings = ["Name", "Height", "Mass", "Hair Color", "Action"];
+
   const viewPeopleDetailsModalHandler = () => {
     console.log("_dd view user clicked");
   };
+
+  const goToPage = (link: String) => {
+    console.log('goto page...', link);
+    // const {data, loading, error} = useFetchPeople(link);
+    // console.log("_dd sssssssssssssdata", data, loading);
+  };
+
   useEffect(() => {
     console.log("_dd data", data, loading);
-
     setPeoples(data);
-  }, [data]);
+    setIsLoading(loading);
+    setErrorMsg(error);
+  }, []);
+
+  
 
   return (
     <Wrapper>
       <PageHeading>People list</PageHeading>
 
-      {loading && <div>Loading...</div>}
+      {isLoading && <div>Loading...</div>}
 
-      {error && <div>${error}</div>}
+      {errorMsg && <div>${errorMsg}</div>}
 
-      {peoples?.results && (
+      {!isLoading && peoples?.results && (
         <>
           <Table>
             <TableHeading tHeadings={tableHeadings} />
-
-            {/* {peoples?.results?.map((people: any, i: number): any => (
-          <TableRow
-            tRowsData={{
-              name: people.name,
-              height: people.height,
-              mass: people.mass,
-              hair_color: people.hair_color,
-              action: (
-                <button onClick={viewPeopleDetailsModalHandler}>View</button>
-              ),
-            }}
-          />
-        ))} */}
             <tbody>
-              {peoples?.results?.map((people: any, i: number): any => (
+              {peoples.results?.map((people: any, i: number): any => (
                 <tr key={i}>
                   <td>{people.name}</td>
                   <td>{people.height}</td>
                   <td>{people.mass}</td>
                   <td>{people.hair_color}</td>
                   <td>
-                    <Button>View</Button>
+                    <Button onClick={viewPeopleDetailsModalHandler}>View</Button>
                   </td>
                 </tr>
               ))}
             </tbody>
           </Table>
           <TableFooter>
-            <Button>Previous</Button>
-            <Button>Next</Button>
+            <Button onClick={() => goToPage(peoples.previous)} disabled={!peoples.previous}>Previous</Button>
+            <Button onClick={() => goToPage(peoples.next)} disabled={!peoples.next}>Next</Button>
           </TableFooter>
         </>
       )}
