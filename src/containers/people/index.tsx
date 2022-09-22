@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Button from "../../components/button";
+import Filter from "../../components/filter";
 import { PageHeading } from "../../components/page-heading";
 import Table from "../../components/table";
 import TableFooter from "../../components/table-footer";
@@ -31,6 +32,10 @@ const People = () => {
     // console.log("_dd sssssssssssssdata", data, loading);
   };
 
+  const filter = (value: string) => {
+    console.log('fitler...', value);
+  }
+
   useEffect(() => {
     console.log("_dd data", data, loading);
     setPeoples(data);
@@ -43,6 +48,8 @@ const People = () => {
   return (
     <Wrapper>
       <PageHeading>People list</PageHeading>
+
+      <Filter onChange={(e) => {filter(e.target.value)}}/>
 
       {isLoading && <div>Loading...</div>}
 
