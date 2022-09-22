@@ -22,7 +22,7 @@ const People = () => {
     console.log("_dd view user clicked");
   };
   useEffect(() => {
-    console.log("_dd data", data);
+    console.log("_dd data", data, loading);
 
     setPeoples(data);
   }, [data]);
@@ -30,6 +30,11 @@ const People = () => {
   return (
     <Wrapper>
       <PageHeading>People list</PageHeading>
+
+      {loading && <div>Loading...</div>}
+
+      {error && <div>${error}</div>}
+
       {peoples?.results && (
         <>
           <Table>
